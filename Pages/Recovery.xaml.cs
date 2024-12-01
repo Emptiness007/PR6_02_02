@@ -138,5 +138,10 @@ namespace RegIN_Filimonova.Pages
         {
             MainWindow.mainWindow.OpenPage(new Login());
         }
+        public void SetNotification(string Message, SolidColorBrush _Color)
+        {
+            LNameUser.Content = Message;
+            LNameUser.Foreground = _Color;
+        }
     }
 }

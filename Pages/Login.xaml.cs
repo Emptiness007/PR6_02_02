@@ -136,14 +136,14 @@ namespace RegIN_Filimonova.Pages
                         }
                         else
                         {
-                            Thread TBlockAuthorization = new Thread(BlockAutorization);
+                            Thread TBlockAuthorization = new Thread(BlockAuthorization);
                             TBlockAuthorization.Start();
                             SendMail.SendMessage("An attempt was made to log into your account.", MainWindow.mainWindow.UserLogIn.Login);
                         }
                     }
                 }
                 else
-                    SetNotifacation($"Enter capture", Brushes.Red);
+                    SetNotification($"Enter capture", Brushes.Red);
             }
         }
         public void BlockAuthorization()
