@@ -58,7 +58,7 @@ namespace RegIN_Filimonova.Classes
                 WorkingDB.CloseConnection(mySqlConnection);
             }
         }
-        private void SetUser()
+        public void SetUser()
         {
             MySqlConnection mySqlConnection = WorkingDB.OpenConnection();
             if (WorkingDB.OpenConnection(mySqlConnection))
