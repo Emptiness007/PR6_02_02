@@ -34,7 +34,7 @@ namespace RegIN_Filimonova.Classes
             mySqlConnection.Close();
             MySqlConnection.ClearPool(mySqlConnection);
         }
-        public static bool OPenConnection(MySqlConnection mySqlConnection)
+        public static bool OpenConnection(MySqlConnection mySqlConnection)
         {
             return mySqlConnection != null && mySqlConnection.State == System.Data.ConnectionState.Open;
         }

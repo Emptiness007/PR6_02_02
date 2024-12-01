@@ -15,7 +15,7 @@ namespace RegIN_Filimonova.Classes
             var smtpClient = new SmtpClient("smpt.yandex.ru")
             {
                 Port = 587,
-                Credentials = new NetworkCredential("yandex@yandex.ru", "password"),
+                Credentials = new NetworkCredential("alenafilimonovafilimonowa@yandex.ru", "uphnsxzyigrfgsrx"),
                 EnableSsl = true
             };
             smtpClient.Send("landaxer@yandex.ru", To, "Проект RegIn", Message);
