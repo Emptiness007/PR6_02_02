@@ -10,7 +10,7 @@ namespace RegIN_Filimonova.Classes
 {
     public class WorkingDB
     {
-        readonly static string connection = "server=127.0.0.1;port=3307;database=regin;user=root;pwd;";
+        readonly static string connection = "server=127.0.0.1;port=3307;database=regin;user=root;pwd=;";
         public static MySqlConnection OpenConnection()
         {
             try

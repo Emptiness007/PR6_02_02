@@ -51,97 +51,63 @@ namespace RegIN_Filimonova.Pages
         {
             if (FileDialogImage.ShowDialog() == true)
             {
-                // конвертируем размер изображения
                 using (Aspose.Imaging.Image image = Aspose.Imaging.Image.Load(FileDialogImage.FileName))
                 {
-                    // создаём ширину изображения
                     int NewWidth = 0;
-                    // Создаём высоту изображения
                     int NewHeight = 0;
-                    // проверяем какая из сторон больше
                     if (image.Width > image.Height)
                     {
-                        // Расчитываем новую ширину относительно высоты
                         NewWidth = (int)(image.Width * (256f / image.Height));
-                        // Задаём высоту изображения
                         NewHeight = 256;
                     }
                     else
                     {
-                        // Задаём ширину изображения
                         NewWidth = 256;
-                        // Расчитываем новую высоту относительно высоты
                         NewHeight = (int)(image.Height * (256f / image.Width));
                     }
-                    // Изменяем изобружение
+
                     image.Resize(NewWidth, NewHeight);
-                    // Сохраняем изображение
                     image.Save("IUser.jpg");
                 }
-                // обрезаем изображение
+
                 using (Aspose.Imaging.RasterImage rasterImage = (Aspose.Imaging.RasterImage)Aspose.Imaging.Image.Load("IUser.jpg"))
                 {
-                    // Перед кадрированием изображение следует кэшировать для лучшей производительности.
                     if (!rasterImage.IsCached)
                     {
                         rasterImage.CacheData();
                     }
-                    // Задаём X
                     int X = 0;
-                    // Задаём ширину изображения
                     int Width = 256;
-                    // Задаём Y
                     int Y = 0;
-                    // Задаём высоту изображения
                     int Height = 256;
 
-                    // Если ширина изображения больше чем высота
                     if (rasterImage.Width > rasterImage.Height)
-                        // Расчитываем X как середину изображения
                         X = (int)((rasterImage.Width - 256f) / 2);
                     else
-                        // Если высота больше
-                        // Расчитываем Y как середину
                         Y = (int)((rasterImage.Height - 256f) / 2);
 
-                    // Создайте экземпляр класса Rectangle нужного размера и обрежьте изображение.
                     Aspose.Imaging.Rectangle rectangle = new Aspose.Imaging.Rectangle(X, Y, Width, Height);
                     rasterImage.Crop(rectangle);
 
-                    // Сохраните обрезанное изображение.
                     rasterImage.Save("IUser.jpg");
                 }
-                // Создаём анимацию старта
                 DoubleAnimation StartAnimation = new DoubleAnimation();
-                // Указываем значение от которого она выполняется
                 StartAnimation.From = 1;
-                // Указываем значение до которого она выполняется
                 StartAnimation.To = 0;
-                // Указываем продолжительность выполнения
                 StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                // Присваиваем событие при конце анимации
                 StartAnimation.Completed += delegate
                 {
-                    // Устанавливаем изображение
                     IUser.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + @"\IUser.jpg"));
-                    // Создаём анимацию конца
                     DoubleAnimation EndAnimation = new DoubleAnimation();
-                    // Указываем значение от которого она выполняется
                     EndAnimation.From = 0;
-                    // Указываем значение до которого она выполняется
                     EndAnimation.To = 1;
-                    // Указываем продолжительность выполнения
                     EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                    // Запускаем анимацию плавной смены на изображении
                     IUser.BeginAnimation(System.Windows.Controls.Image.OpacityProperty, EndAnimation);
                 };
-                // Запускаем анимацию плавной смены на изображении
                 IUser.BeginAnimation(System.Windows.Controls.Image.OpacityProperty, StartAnimation);
-                // Запоминаем что изображение указано
                 BSetImages = true;
             }
             else
-                // Запоминаем что изображение не указано
                 BSetImages = false;
         }
 

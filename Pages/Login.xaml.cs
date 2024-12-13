@@ -42,35 +42,36 @@ namespace RegIN_Filimonova.Pages
             if (OldLogin != TbLogin.Text)
             {
                 SetNotification("Hi, " + MainWindow.mainWindow.UserLogIn.Name, Brushes.Black);
-            }
-            try
-            {
-                BitmapImage biImg = new BitmapImage();
-                MemoryStream ms = new MemoryStream(MainWindow.mainWindow.UserLogIn.Image);
-                biImg.BeginInit();
-                biImg.StreamSource = ms;
-                biImg.EndInit();
-                ImageSource imgSrc = biImg;
-                DoubleAnimation StartAnimation = new DoubleAnimation();
-                StartAnimation.From = 1;
-                StartAnimation.To = 0;
-                StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                StartAnimation.Completed += delegate
+                try
                 {
-                    IUser.Source = imgSrc;
-                    DoubleAnimation EndAnimation = new DoubleAnimation();
-                    EndAnimation.From = 0;
-                    EndAnimation.To = 1;
-                    EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                    IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
-                };
-                IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
+                    BitmapImage biImg = new BitmapImage();
+                    MemoryStream ms = new MemoryStream(MainWindow.mainWindow.UserLogIn.Image);
+                    biImg.BeginInit();
+                    biImg.StreamSource = ms;
+                    biImg.EndInit();
+                    ImageSource imgSrc = biImg;
+                    DoubleAnimation StartAnimation = new DoubleAnimation();
+                    StartAnimation.From = 1;
+                    StartAnimation.To = 0;
+                    StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
+                    StartAnimation.Completed += delegate
+                    {
+                        IUser.Source = imgSrc;
+                        DoubleAnimation EndAnimation = new DoubleAnimation();
+                        EndAnimation.From = 0;
+                        EndAnimation.To = 1;
+                        EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
+                        IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
+                    };
+                    IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                OldLogin = TbLogin.Text;
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-            OldLogin = TbLogin.Text;
+            
         }
         public void InCorrectLogin()
         {
