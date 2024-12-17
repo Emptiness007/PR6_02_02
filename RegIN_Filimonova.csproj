@@ -151,6 +151,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PinCode.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\Recovery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -166,6 +170,9 @@
     </Compile>
     <Compile Include="Pages\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PinCode.xaml.cs">
+      <DependentUpon>PinCode.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\Recovery.xaml.cs">
       <DependentUpon>Recovery.xaml</DependentUpon>
@@ -204,6 +211,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic-mail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic-pin.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets" Condition="Exists('packages\MaterialDesignThemes.5.1.0\build\MaterialDesignThemes.targets')" />

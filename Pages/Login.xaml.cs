@@ -42,36 +42,61 @@ namespace RegIN_Filimonova.Pages
             if (OldLogin != TbLogin.Text)
             {
                 SetNotification("Hi, " + MainWindow.mainWindow.UserLogIn.Name, Brushes.Black);
-                try
+                UpdateAndAnimateImage(MainWindow.mainWindow.UserLogIn.Image);
+
+                if (!string.IsNullOrEmpty(MainWindow.mainWindow.UserLogIn.PinCode))
                 {
-                    BitmapImage biImg = new BitmapImage();
-                    MemoryStream ms = new MemoryStream(MainWindow.mainWindow.UserLogIn.Image);
+                    MessageBoxResult result = MessageBox.Show("Хотите ли вы авторизоваться по пин-коду?", "Авторизация", MessageBoxButton.YesNo);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        TbPassword.Visibility = Visibility.Collapsed;
+                        LPassword.Visibility = Visibility.Collapsed;
+                        LPinCode.Visibility = Visibility.Visible;
+                        TbPinCode.Visibility = Visibility.Visible;
+                        TbPinCode.Focus();
+                    }
+                }
+                OldLogin = TbLogin.Text;
+            } 
+        }
+
+        private void UpdateAndAnimateImage(byte[] imageBytes)
+        {
+            try
+            {
+                BitmapImage biImg = new BitmapImage();
+                using (MemoryStream ms = new MemoryStream(imageBytes))
+                {
                     biImg.BeginInit();
                     biImg.StreamSource = ms;
                     biImg.EndInit();
-                    ImageSource imgSrc = biImg;
-                    DoubleAnimation StartAnimation = new DoubleAnimation();
-                    StartAnimation.From = 1;
-                    StartAnimation.To = 0;
-                    StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
-                    StartAnimation.Completed += delegate
-                    {
-                        IUser.Source = imgSrc;
-                        DoubleAnimation EndAnimation = new DoubleAnimation();
-                        EndAnimation.From = 0;
-                        EndAnimation.To = 1;
-                        EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
-                        IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
-                    };
-                    IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
                 }
-                catch (Exception ex)
+
+                DoubleAnimation startAnimation = new DoubleAnimation
                 {
-                    Debug.WriteLine(ex.Message);
-                }
-                OldLogin = TbLogin.Text;
+                    From = 1,
+                    To = 0,
+                    Duration = TimeSpan.FromSeconds(0.6)
+                };
+
+                startAnimation.Completed += (s, e) =>
+                {
+                    IUser.Source = biImg;
+                    DoubleAnimation endAnimation = new DoubleAnimation
+                    {
+                        From = 0,
+                        To = 1,
+                        Duration = TimeSpan.FromSeconds(1.2)
+                    };
+                    IUser.BeginAnimation(Image.OpacityProperty, endAnimation);
+                };
+
+                IUser.BeginAnimation(Image.OpacityProperty, startAnimation);
             }
-            
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
         }
         public void InCorrectLogin()
         {
@@ -203,6 +228,30 @@ namespace RegIN_Filimonova.Pages
         {
             LNameUser.Content = Message;
             LNameUser.Foreground = _Color;  
+        }
+
+        private void SetPinCode(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                CheckPinCode();
+            }
+        }
+        private void CheckPinCode()
+        {
+            if (IsCapture)
+            {
+                if (TbPinCode.Text == MainWindow.mainWindow.UserLogIn.PinCode)
+                {
+                    MessageBox.Show("Authorization was successful!");
+                }
+                else
+                {
+                    SetNotification("Invalid PIN code", Brushes.Red);
+                }
+            }
+            else
+                SetNotification($"Enter capture", Brushes.Red);
         }
     }
 }

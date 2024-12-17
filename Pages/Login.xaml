@@ -63,6 +63,7 @@
                     Margin="10,213,10,0" Height="100"
                     VerticalAlignment="Top"/>
                 <Label
+                    x:Name="LPassword"
                     Content="Enter password:"
                     Margin="10,318,10,0"
                     VerticalAlignment="Top"/>
@@ -72,6 +73,24 @@
                     VerticalAlignment="Top"
                     Height="26"
                     KeyUp="SetPassword"/>
+                <Label
+                    x:Name="LPinCode"
+                    Content="Enter PIN Code (4 digits):"
+                    Margin="10, 318, 10, 0"
+                    VerticalAlignment="Top"
+                    Visibility="Collapsed"/>
+
+                <TextBox
+                    x:Name="TbPinCode"
+                    Height="23"
+                    Margin="10, 342, 10, 0"
+                    TextWrapping="Wrap"
+                    Text=""
+                    MaxLength="4"
+                    VerticalAlignment="Top"
+                    Visibility="Collapsed"
+                    KeyUp="SetPinCode"/>
+
                 <Label
                     Content="Forgot your password?"
                     Margin="10,373,0,0"

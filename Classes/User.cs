@@ -14,6 +14,7 @@ namespace RegIN_Filimonova.Classes
         public string Password { get; set; }
         public string Name { get; set; }
         public byte[] Image = new byte[0];
+        public string PinCode { get; set; }
         public DateTime DateUpdate { get; set; }
         public DateTime DateCreate { get; set; }
         public CorrectLogin HandlerCorrectLogin;
@@ -27,6 +28,7 @@ namespace RegIN_Filimonova.Classes
             this.Password = String.Empty;
             this.Name = String.Empty;
             this.Image = new byte[0];
+            this.PinCode = String.Empty;
             MySqlConnection mySqlConnection = WorkingDB.OpenConnection();
             if (WorkingDB.OpenConnection(mySqlConnection))
             {
@@ -43,8 +45,9 @@ namespace RegIN_Filimonova.Classes
                         this.Image = new byte[64 * 1024];
                         userQuery.GetBytes(4, 0, Image, 0, Image.Length);
                     }
-                    this.DateUpdate = userQuery.GetDateTime(5);
-                    this.DateCreate = userQuery.GetDateTime(6);
+                    this.PinCode = userQuery.GetString(5);
+                    this.DateUpdate = userQuery.GetDateTime(6);
+                    this.DateCreate = userQuery.GetDateTime(7);
                     HandlerCorrectLogin.Invoke();
                 }
                 else
@@ -63,17 +66,31 @@ namespace RegIN_Filimonova.Classes
             MySqlConnection mySqlConnection = WorkingDB.OpenConnection();
             if (WorkingDB.OpenConnection(mySqlConnection))
             {
-                MySqlCommand mySqlCommand = new MySqlCommand("INSERT INTO `users`(`Login`, `Password`, `Name`, `Image`, `DateUpdate`, `DateCreate`) VALUES" +
+                MySqlCommand mySqlCommand = new MySqlCommand("INSERT INTO `users`(`Login`, `Password`, `Name`, `Image`, `PinCode`, `DateUpdate`, `DateCreate`) VALUES" +
                     "(@Login, @Password, @Name, @Image, @DateUpdate, @DateCreate)", mySqlConnection);
                 mySqlCommand.Parameters.AddWithValue("@Login", this.Login);
                 mySqlCommand.Parameters.AddWithValue("@Password", this.Password);
                 mySqlCommand.Parameters.AddWithValue("@Name", this.Name);
                 mySqlCommand.Parameters.AddWithValue("@Image", this.Image);
+                mySqlCommand.Parameters.AddWithValue("PinCode", this.PinCode);
                 mySqlCommand.Parameters.AddWithValue("@DateUpdate", this.DateUpdate);
                 mySqlCommand.Parameters.AddWithValue("@DateCreate", this.DateCreate);
                 mySqlCommand.ExecuteNonQuery();
             }
             WorkingDB.CloseConnection(mySqlConnection);
+        }
+        public void UpdatePinCode()
+        {
+            using (MySqlConnection mySqlConnection = WorkingDB.OpenConnection())
+            {
+                if (mySqlConnection != null)
+                {
+                    MySqlCommand mySqlCommand = new MySqlCommand("UPDATE `users` SET `PinCode` = @PinCode WHERE `Login` = @Login", mySqlConnection);
+                    mySqlCommand.Parameters.AddWithValue("@PinCode", this.PinCode);
+                    mySqlCommand.Parameters.AddWithValue("@Login", this.Login);
+                    mySqlCommand.ExecuteNonQuery();
+                }
+            }
         }
         public void CreateNewPassword()
         {

@@ -25,12 +25,12 @@ namespace RegIN_Filimonova.Pages
         {
             Login, Regin
         }
-        TypeConfirmation ThisTypeConfirmation;
+        TypeConfirmation  thisTypeConfirmation;
         public int Code = 0;
-        public Confirmation(TypeConfirmation TypeConfirmation)
+        public Confirmation(TypeConfirmation typeConfirmation)
         {
             InitializeComponent();
-            ThisTypeConfirmation = TypeConfirmation;
+            thisTypeConfirmation = typeConfirmation;
             SendMailCode();
         }
         public void SendMailCode()
@@ -57,28 +57,27 @@ namespace RegIN_Filimonova.Pages
             });
         }
 
-        private void SetCode(object sender, KeyEventArgs e)
-        {
-            if (TbCode.Text.Length == 6)
-                SetCode();
-        }
-
         private void SetCode(object sender, RoutedEventArgs e)
         {
-            SetCode();
+            if (TbCode.Text.Length == 6)
+                ConfirmCode();
         }
-        void SetCode()
+
+        private void ConfirmCode()
         {
-            if (TbCode.Text == Code.ToString() && TbCode.IsEnabled == true)
+            if (TbCode.Text == Code.ToString() && TbCode.IsEnabled)
             {
                 TbCode.IsEnabled = false;
-                if (ThisTypeConfirmation == TypeConfirmation.Login)
-                    MessageBox.Show("Авторизация пользователя успешно подтверждена.");
-                else
+                string message = thisTypeConfirmation == TypeConfirmation.Login
+                    ? "Авторизация пользователя успешно подтверждена." : "Регистрация пользователя успешно подтверждена.";
+
+                MessageBox.Show(message);
+
+                if (thisTypeConfirmation == TypeConfirmation.Regin)
                 {
                     MainWindow.mainWindow.UserLogIn.SetUser();
-                    MessageBox.Show("Регистрация пользователя успешно подтверждена.");
                 }
+                MainWindow.mainWindow.OpenPage(new PinCode());
             }
         }
 
