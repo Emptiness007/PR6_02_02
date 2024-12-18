@@ -77,7 +77,15 @@ namespace RegIN_Filimonova.Pages
                 {
                     MainWindow.mainWindow.UserLogIn.SetUser();
                 }
-                MainWindow.mainWindow.OpenPage(new PinCode());
+                if (MainWindow.mainWindow.UserLogIn.PinCode != null)
+                {
+                    MainWindow.mainWindow.OpenPage(new Pages.Login());
+                }
+                else
+                {
+                    MainWindow.mainWindow.OpenPage(new PinCode());
+                }
+                
             }
         }
 
