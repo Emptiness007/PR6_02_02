@@ -42,7 +42,33 @@ namespace RegIN_Filimonova.Pages
             if (OldLogin != TbLogin.Text)
             {
                 SetNotification("Hi, " + MainWindow.mainWindow.UserLogIn.Name, Brushes.Black);
-                UpdateAndAnimateImage(MainWindow.mainWindow.UserLogIn.Image);
+                try
+                {
+                    BitmapImage biImg = new BitmapImage();
+                    MemoryStream ms = new MemoryStream(MainWindow.mainWindow.UserLogIn.Image);
+                    biImg.BeginInit();
+                    biImg.StreamSource = ms;
+                    biImg.EndInit();
+                    ImageSource imgSrc = biImg;
+                    DoubleAnimation StartAnimation = new DoubleAnimation();
+                    StartAnimation.From = 1;
+                    StartAnimation.To = 0;
+                    StartAnimation.Duration = TimeSpan.FromSeconds(0.6);
+                    StartAnimation.Completed += delegate
+                    {
+                        IUser.Source = imgSrc;
+                        DoubleAnimation EndAnimation = new DoubleAnimation();
+                        EndAnimation.From = 0;
+                        EndAnimation.To = 1;
+                        EndAnimation.Duration = TimeSpan.FromSeconds(1.2);
+                        IUser.BeginAnimation(Image.OpacityProperty, EndAnimation);
+                    };
+                    IUser.BeginAnimation(Image.OpacityProperty, StartAnimation);
+                }
+                catch (Exception exp)
+                {
+                    Debug.WriteLine(exp.Message);
+                };
 
                 if (!string.IsNullOrEmpty(MainWindow.mainWindow.UserLogIn.PinCode))
                 {
@@ -60,44 +86,6 @@ namespace RegIN_Filimonova.Pages
             } 
         }
 
-        private void UpdateAndAnimateImage(byte[] imageBytes)
-        {
-            try
-            {
-                BitmapImage biImg = new BitmapImage();
-                using (MemoryStream ms = new MemoryStream(imageBytes))
-                {
-                    biImg.BeginInit();
-                    biImg.StreamSource = ms;
-                    biImg.EndInit();
-                }
-
-                DoubleAnimation startAnimation = new DoubleAnimation
-                {
-                    From = 1,
-                    To = 0,
-                    Duration = TimeSpan.FromSeconds(0.6)
-                };
-
-                startAnimation.Completed += (s, e) =>
-                {
-                    IUser.Source = biImg;
-                    DoubleAnimation endAnimation = new DoubleAnimation
-                    {
-                        From = 0,
-                        To = 1,
-                        Duration = TimeSpan.FromSeconds(1.2)
-                    };
-                    IUser.BeginAnimation(Image.OpacityProperty, endAnimation);
-                };
-
-                IUser.BeginAnimation(Image.OpacityProperty, startAnimation);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-        }
         public void InCorrectLogin()
         {
             if (LNameUser.Content != "")
