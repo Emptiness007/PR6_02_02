@@ -67,12 +67,12 @@ namespace RegIN_Filimonova.Classes
             if (WorkingDB.OpenConnection(mySqlConnection))
             {
                 MySqlCommand mySqlCommand = new MySqlCommand("INSERT INTO `users`(`Login`, `Password`, `Name`, `Image`, `PinCode`, `DateUpdate`, `DateCreate`) VALUES" +
-                    "(@Login, @Password, @Name, @Image, @DateUpdate, @DateCreate)", mySqlConnection);
+                    "(@Login, @Password, @Name, @Image, @PinCode, @DateUpdate, @DateCreate)", mySqlConnection);
                 mySqlCommand.Parameters.AddWithValue("@Login", this.Login);
                 mySqlCommand.Parameters.AddWithValue("@Password", this.Password);
                 mySqlCommand.Parameters.AddWithValue("@Name", this.Name);
                 mySqlCommand.Parameters.AddWithValue("@Image", this.Image);
-                mySqlCommand.Parameters.AddWithValue("PinCode", this.PinCode);
+                mySqlCommand.Parameters.AddWithValue("@PinCode", this.PinCode);
                 mySqlCommand.Parameters.AddWithValue("@DateUpdate", this.DateUpdate);
                 mySqlCommand.Parameters.AddWithValue("@DateCreate", this.DateCreate);
                 mySqlCommand.ExecuteNonQuery();
